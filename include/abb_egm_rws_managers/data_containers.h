@@ -42,7 +42,7 @@
 #include <vector>
 
 #include <abb_libegm/egm_controller_interface.h>
-#include <abb_librws/rws_state_machine_interface.h>
+#include <abb_librws_2/rws_state_machine_interface.h>
 
 #include "abb_egm_rws_managers_export.h"
 

@@ -33,7 +33,7 @@ project(${extracted_name} VERSION ${extracted_version} LANGUAGES CXX)
 # ABB robot controllers)
 #-----------------------------
 find_package(abb_libegm REQUIRED)
-find_package(abb_librws REQUIRED)
+find_package(abb_librws_2 REQUIRED)
 
 #-----------------------------
 # Threads (determines the
@@ -128,7 +128,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 
 target_link_libraries(${PROJECT_NAME} PUBLIC
   abb_libegm::abb_libegm
-  abb_librws::abb_librws
+  abb_librws_2::abb_librws_2
   protobuf::libprotobuf
   Threads::Threads
 )

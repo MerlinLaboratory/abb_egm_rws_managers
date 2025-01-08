@@ -7,7 +7,7 @@ include(CMakeFindDependencyMacro)
 # Dependencies
 #===========================================================
 find_dependency(abb_libegm REQUIRED)
-find_dependency(abb_librws REQUIRED)
+find_dependency(abb_librws_2 REQUIRED)
 find_dependency(Protobuf REQUIRED)
 find_dependency(Threads REQUIRED)
 

@@ -14,7 +14,7 @@
   <buildtool_depend>cmake</buildtool_depend>
 
   <depend>abb_libegm</depend>
-  <depend>abb_librws</depend>
+  <depend>abb_librws_2</depend>
 
   <build_depend>protobuf-dev</build_depend>
   <build_export_depend>protobuf-dev</build_export_depend>
