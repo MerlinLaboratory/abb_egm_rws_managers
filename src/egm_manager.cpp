@@ -44,7 +44,7 @@ namespace
 /**
  * \brief Number of allowed missed messages, before a channel is assumed to be inactive.
  */
-constexpr unsigned int MISSED_MESSAGES_THRESHOLD{5};
+constexpr unsigned int MISSED_MESSAGES_THRESHOLD{10};
 
 /**
  * \brief Minimum accepted speed [deg/s or mm/s] for velocity commands.
@@ -145,6 +145,9 @@ bool EGMManager::Channel::read(MotionData::MechanicalUnitGroup& group)
   {
     // channel was activated
     std::cout << "[INFO] EGM channel activated." << std::endl;
+    std::cout << "[DEBUG] last msgs sequences = " << input_.header().sequence_number() << " , " << previous_header_.sequence_number() << std::endl;
+    std::cout << "[DEBUG] last msgs timestamps = " << input_.header().time_stamp() << " , " << previous_header_.time_stamp() << std::endl;
+
   }
 
 
