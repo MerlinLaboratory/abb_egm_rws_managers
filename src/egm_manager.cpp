@@ -111,6 +111,8 @@ bool EGMManager::Channel::read(MotionData::MechanicalUnitGroup& group)
   if(input_.header().sequence_number() == previous_header_.sequence_number())
   {
     ++missed_messages_;  
+    std::cout << "[DEBUG] missed message = " << input_.header().sequence_number() << " , timestamps = "  << input_.header().time_stamp()  << std::endl;
+
   }
   else
   {
@@ -135,7 +137,7 @@ bool EGMManager::Channel::read(MotionData::MechanicalUnitGroup& group)
   {
     // channel was deactivated
 
-    std::cerr << "[WARNING] EGM channel deactivated." << std::endl;
+    std::cerr << "\n[WARNING] EGM channel deactivated." << std::endl;
     std::cout << "[DEBUG] last msgs sequences = " << input_.header().sequence_number() << " , " << previous_header_.sequence_number() << std::endl;
     std::cout << "[DEBUG] last msgs timestamps = " << input_.header().time_stamp() << " , " << previous_header_.time_stamp() << std::endl;
 
@@ -144,7 +146,7 @@ bool EGMManager::Channel::read(MotionData::MechanicalUnitGroup& group)
   if (group.egm_channel_data.was_activated_or_deactivated && channel_is_active_)
   {
     // channel was activated
-    std::cout << "[INFO] EGM channel activated." << std::endl;
+    std::cout << "\n[INFO] EGM channel activated." << std::endl;
     std::cout << "[DEBUG] last msgs sequences = " << input_.header().sequence_number() << " , " << previous_header_.sequence_number() << std::endl;
     std::cout << "[DEBUG] last msgs timestamps = " << input_.header().time_stamp() << " , " << previous_header_.time_stamp() << std::endl;
 
@@ -180,13 +182,13 @@ bool EGMManager::Channel::read(MotionData::MechanicalUnitGroup& group)
 void EGMManager::Channel::write(const MotionData::MechanicalUnitGroup& group)
 {
   // Write commands if the channel is active.
-  if(channel_is_active_)
-  {
+  //if(channel_is_active_)
+  //{
     prepareOutputs();
     updateTCPRobotJointCommands(group);
     updateExternalJointCommands(group);
     p_interface_->write(output_);
-  }
+  //}
 }
 
 /***********************************************************
