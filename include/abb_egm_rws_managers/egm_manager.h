@@ -272,6 +272,8 @@ private:
      * \brief Number of missed messages.
      */
     unsigned int missed_messages_;
+
+
   };
 
   /**
