@@ -44,7 +44,7 @@ namespace
 /**
  * \brief Number of allowed missed messages, before a channel is assumed to be inactive.
  */
-constexpr unsigned int MISSED_MESSAGES_THRESHOLD{5};
+constexpr unsigned int MISSED_MESSAGES_THRESHOLD{10};
 
 /**
  * \brief Minimum accepted speed [deg/s or mm/s] for velocity commands.
@@ -110,7 +110,9 @@ bool EGMManager::Channel::read(MotionData::MechanicalUnitGroup& group)
   // Check the sequence number to detect missed messages.
   if(input_.header().sequence_number() == previous_header_.sequence_number())
   {
-    ++missed_messages_;
+    ++missed_messages_;  
+    if (missed_messages_>=2)
+      std::cout << "[DEBUG] missed message = " << input_.header().sequence_number() << " , timestamps = "  << input_.header().time_stamp()  << std::endl;
   }
   else
   {
@@ -131,8 +133,28 @@ bool EGMManager::Channel::read(MotionData::MechanicalUnitGroup& group)
                                                           previous_status_.rapid_execution_state();
   group.egm_channel_data.egm_client_state_changed = input_.status().egm_state() != previous_status_.egm_state();
 
+  if (group.egm_channel_data.was_activated_or_deactivated && !channel_is_active_)
+  {
+    // channel was deactivated
+
+    std::cerr << "\n[WARNING] EGM channel deactivated." << std::endl;
+    std::cout << "[DEBUG] last msgs sequences = " << input_.header().sequence_number() << " , " << previous_header_.sequence_number() << std::endl;
+    std::cout << "[DEBUG] last msgs timestamps = " << input_.header().time_stamp() << " , " << previous_header_.time_stamp() << std::endl;
+
+  }
+
+  if (group.egm_channel_data.was_activated_or_deactivated && channel_is_active_)
+  {
+    // channel was activated
+    std::cout << "\n[INFO] EGM channel activated." << std::endl;
+    std::cout << "[DEBUG] last msgs sequences = " << input_.header().sequence_number() << " , " << previous_header_.sequence_number() << std::endl;
+    std::cout << "[DEBUG] last msgs timestamps = " << input_.header().time_stamp() << " , " << previous_header_.time_stamp() << std::endl;
+
+  }
+
+
   // Update the states if the channel is active.
-  if(channel_is_active_)
+  //if(channel_is_active_)
   {
     group.egm_channel_data.input.CopyFrom(input_);
 
@@ -146,6 +168,10 @@ bool EGMManager::Channel::read(MotionData::MechanicalUnitGroup& group)
       any_new_states = true;
     }
   }
+  //else
+  //{
+  //  std::cerr << "[WARNING] could not read because EGM channel is not active." << std::endl;
+  //}
 
   previous_header_.CopyFrom(input_.header());
   previous_status_.CopyFrom(input_.status());
@@ -156,13 +182,13 @@ bool EGMManager::Channel::read(MotionData::MechanicalUnitGroup& group)
 void EGMManager::Channel::write(const MotionData::MechanicalUnitGroup& group)
 {
   // Write commands if the channel is active.
-  if(channel_is_active_)
-  {
+  //if(channel_is_active_)
+  //{
     prepareOutputs();
     updateTCPRobotJointCommands(group);
     updateExternalJointCommands(group);
     p_interface_->write(output_);
-  }
+  //}
 }
 
 /***********************************************************
