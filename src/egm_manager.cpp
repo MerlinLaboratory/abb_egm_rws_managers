@@ -111,8 +111,8 @@ bool EGMManager::Channel::read(MotionData::MechanicalUnitGroup& group)
   if(input_.header().sequence_number() == previous_header_.sequence_number())
   {
     ++missed_messages_;  
-    std::cout << "[DEBUG] missed message = " << input_.header().sequence_number() << " , timestamps = "  << input_.header().time_stamp()  << std::endl;
-
+    if (missed_messages_>=2)
+      std::cout << "[DEBUG] missed message = " << input_.header().sequence_number() << " , timestamps = "  << input_.header().time_stamp()  << std::endl;
   }
   else
   {
@@ -154,7 +154,7 @@ bool EGMManager::Channel::read(MotionData::MechanicalUnitGroup& group)
 
 
   // Update the states if the channel is active.
-  if(channel_is_active_)
+  //if(channel_is_active_)
   {
     group.egm_channel_data.input.CopyFrom(input_);
 
