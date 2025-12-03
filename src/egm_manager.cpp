@@ -111,7 +111,7 @@ bool EGMManager::Channel::read(MotionData::MechanicalUnitGroup& group)
   if(input_.header().sequence_number() == previous_header_.sequence_number())
   {
     ++missed_messages_;  
-    if (missed_messages_>=2)
+    if (missed_messages_%10==0)
       std::cout << "[DEBUG] missed message = " << input_.header().sequence_number() << " , timestamps = "  << input_.header().time_stamp()  << std::endl;
   }
   else
