@@ -445,6 +445,20 @@ struct MotionData
   std::vector<MechanicalUnitGroup> groups;
 };
 
+
+/**
+ * \brief Representation of data concerning IO signals.
+ */
+struct IOSignalData
+{
+  /**
+   * \brief Name of the signal.
+   */
+  std::map<std::string, std::string> signals;
+
+};
+
+
 }
 }
 
