@@ -92,7 +92,7 @@ public:
    * \throw std::runtime_error if a handleable error happened (e.g. communication timed out).
    * \throw std::logic_error if an unhandleable error happened (e.g. switching to another robot controller system).
    */
-  void collectAndUpdateRuntimeData(SystemStateData& system_state_data, MotionData& motion_data);
+  void collectAndUpdateRuntimeData(SystemStateData& system_state_data, MotionData& motion_data, IOSignalData &io_data);
 
   /**
    * \brief Checks if the low priority RWS interface is ready to be used.

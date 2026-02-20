@@ -175,7 +175,7 @@ RobotControllerDescription RWSManager::collectAndParseSystemData(const std::stri
   return description_;
 }
 
-void RWSManager::collectAndUpdateRuntimeData(SystemStateData& system_state_data, MotionData& motion_data)
+void RWSManager::collectAndUpdateRuntimeData(SystemStateData& system_state_data, MotionData& motion_data, IOSignalData& io_data)
 {
   std::lock_guard<std::mutex> guard{interface_mutex_};
 
@@ -287,6 +287,15 @@ void RWSManager::collectAndUpdateRuntimeData(SystemStateData& system_state_data,
   if(system_state_data.rapid_tasks.empty())
   {
     throw std::runtime_error{"RAPID task info missing"};
+  }
+
+  //--------------------------
+  // IO POLLING
+  //--------------------------
+  for (auto it = io_data.signals.begin(); it != io_data.signals.end(); it++)
+  {
+    // iterate through signal names and read io value (string)
+    it->second = interface_.getIOSignal(it->first);
   }
 
   //--------------------------------------------------------
